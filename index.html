@@ -2,92 +2,93 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
     <title>Sketches</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
-    <div id="visualization"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <header>
+            <h2 class="display-2">mood board</h2>
+          </header>
+        </div>
+      </div>
 
-    <script src="https://d3js.org/d3.v4.js"></script>
+      <div class="row">
+        <div class="col-sm">
+          <article>
+            <div class="lead">
+              Ziel dieser Anwendung ist ein Stimmungsbild in einem Unternehmen
+              und den darin enthaltenen Teams abzubilden. Hierfür sollen anonyme
+              Daten von allen Beteiligten aggregiert, aufbereitet und sinnvoll
+              visualisiert werden. Dies soll ermöglichen negativen Entwicklungen
+              vorzubeugen und positive Trends zu verstärken.
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <article>
+            <h2>Verlauf der letzten zehn Arbeitstage</h2>
+            <div class="visualization-recently">todo</div>
+          </article>
+          <article>
+            <h2>Jahresverlauf 2019 (nach Monat)</h2>
+            <div class="visualization"></div>
+          </article>
+          <article>
+            <h2>Jahresverlauf 2019 (nach Woche)</h2>
+            <div class="visualization">todo</div>
+          </article>
+          <article>
+            <h2>Produktteam - Jahresverlauf 2019 (nach Monat)</h2>
+            <div class="visualization">todo</div>
+          </article>
+          <article>
+            <h2>Produktteam - Jahresverlauf 2019 (nach Woche)</h2>
+            <div class="visualization">todo</div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Dependencies -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Application Dependencies -->
+    <script src="https://d3js.org/d3.v5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
-    <script>
-      // set the dimensions and margins of the graph
-      var margin = { top: 30, right: 30, bottom: 30, left: 70 },
-        width = 600 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
 
-      // append the svg object to the body of the page
-      var svg = d3
-        .select("#visualization")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      // Labels of row and columns
-      var days = Array.from(Array(31).keys());
-      var months = Array.from(Array(12).keys()).reverse();
-
-      // Build x scales and axis:
-      var x = d3
-        .scaleBand()
-        .domain(days)
-        .range([10, width])
-        .padding(0);
-
-    //   xAxis = d3.axisBottom(x).tickSize(0).tickValues(x.domain().filter(d => !(d % 2)));
-
-    //   svg
-    //     .append("g")
-    //     .attr("transform", "translate(0," + height + ")")
-    //     .call(xAxis);
-
-      // Build y scales and axis:
-      var y = d3
-        .scaleBand()
-        .domain(months)
-        .range([height - 10, 0])
-        .padding(0);
-
-      yAxis = d3.axisLeft(y).tickFormat( d => moment().month(d).format('MMMM'));
-
-      svg.append("g").call(yAxis);
-
-      // Build color scale
-      var myColor = d3
-        .scaleLinear()
-        .range(["#d1d1e0", "#3399ff"])
-        .domain([1, 100]);
-
-      var randomData = [];
-
-      for (let month in months) {
-        for (let day in days) {
-          if (
-            day <
-            moment()
-              .month(month)
-              .daysInMonth()
-          ) {
-            randomData.push({
-              y: month,
-              x: day,
-              value: Math.random() * (100 - 1) + 1
-            });
-          }
-        }
-      }
-
-      svg
-        .selectAll()
-        .data(randomData)
-        .enter()
-        .append("rect")
-        .attr("x", d => x(d.x))
-        .attr("y", d => y(d.y))
-        .attr("width", x.bandwidth())
-        .attr("height", y.bandwidth())
-        .style("fill", d => myColor(d.value));
-    </script>
+    <!-- Application Code -->
+    <script src="heatmap.js"></script>
   </body>
 </html>
