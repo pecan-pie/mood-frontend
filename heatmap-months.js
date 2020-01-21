@@ -11,7 +11,7 @@ var margin = {
 
   // append the svg object to the body of the page
   var svg = d3
-    .select(".visualization")
+    .select(".visualization-heatmap-months")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -28,13 +28,6 @@ var margin = {
     .domain(days)
     .range([10, width])
     .padding(0);
-
-  //   xAxis = d3.axisBottom(x).tickSize(0).tickValues(x.domain().filter(d => !(d % 2)));
-
-  //   svg
-  //     .append("g")
-  //     .attr("transform", "translate(0," + height + ")")
-  //     .call(xAxis);
 
   // Build y scales and axis:
   var y = d3
