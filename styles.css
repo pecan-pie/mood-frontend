@@ -1,12 +1,18 @@
 body {
     background-color: #002b36;
     color: #eee8d5;
+    font-family: 'Fira Mono', monospace;
 }
 
 text {
     color: #eee8d5;
+    font-family: 'Fira Mono', monospace;
 }
 
 a {
     color: #b58900;
+}
+
+article {
+    padding-bottom: 30px;
 }
